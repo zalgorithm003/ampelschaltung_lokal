@@ -1,0 +1,26 @@
+Befolgt diese Anleitung genau Schritt für Schritt. Sogar leichte Abweichungen führen zu einer Fehlfunktion.
+
+Zuerst müsst ihr git auf euren Linux-Computer installieren. Dies tut ihr mit
+	$ sudo apt-get install git
+	
+Für Textdateien könnt ihr gedit benutzen. Ihr könnt es mit dem Befehl
+	$ sudo apt-get install gedit
+installieren.
+
+Sobald ihr git und gedit installiert habt, müsst ihr einen Ordner namens "main" erstellen, in dem ihr lokal die Dateien bearbeitet. Dies tut ihr mit
+	$ git init main
+	
+Um auf unser Projekt zugreifen zu können, müsst ihr zuerst einige Schritte durchführen. Zuerst müsst ihr einn Git-Benutzer erstellen. Dies könnt ihr mit den folgenden Befehlen:
+	$ git config user.name euer-name
+	$ git config user.email eure-email
+	
+Sobald ihr dies getan habt, erstellt einen GitHub-Account. Als nächstes geht zu "Einstellungen" und "Entwicklereinstellungen" und erstellt einen Personal Access Key / Persönlichen Zugangsschlüssel. Wählt *NICHT* die Option "Fine-Grained Access Token" sondern die "Personal Access Token (Classic)" und setzt ihn auf "No Expiry" / "Läuft nie ab". Als nächstes greift mithilfe des Commands
+	$ git remote add origin https://github.com/malikgdesigns/ampelschaltung.git
+
+Benutzt als nächstes den Command
+	$ git remote -v
+um den Remote-Zugang zu verifizieren.
+
+Nun benutzt den Command
+	& git pull
+
