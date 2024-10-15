@@ -25,7 +25,7 @@ Nun benutzt den Command
 	& git pull origin main
 um die Repository in euren Ordner herunterzuladen. Beim Durchführen dieses Commands müsst ihr euch anmelden. Gibt bei "username" euren GitHub-Benutzernamen und bei "password" euren vorher generierten Personal Access Token an.
 
-Jetzt könnt ihr beliebige Änderungen vornehmen. Wenn ihr damit fertig seid und die Änderungen auf GitHub remote übertragen wollt, müsst ihr den add-Befehl benutzen, um die neuen Dateien zu indizieren.
+Jetzt könnt ihr beliebige Änderungen vornehmen. Wenn ihr damit fertig seid und die Änderungen auf GitHub remote übertragen wollt, müsst ihr den add-Befehl benutzen, um die neuen oder veränderten Dateien zu indizieren.
 	$git add eure-datei.dateiendung
 	
 Als nächstes müsst ihr den commit-Befehl benutzen. Dieser erstellt einen Snapshot und lautet wie folgt:
