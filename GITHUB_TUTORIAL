@@ -22,5 +22,18 @@ Benutzt als nächstes den Command
 um den Remote-Zugang zu verifizieren.
 
 Nun benutzt den Command
-	& git pull
+	& git pull origin main
+um die Repository in euren Ordner herunterzuladen. Beim Durchführen dieses Commands müsst ihr euch anmelden. Gibt bei "username" euren GitHub-Benutzernamen und bei "password" euren vorher generierten Personal Access Token an.
+
+Jetzt könnt ihr beliebige Änderungen vornehmen. Wenn ihr damit fertig seid und die Änderungen auf GitHub remote übertragen wollt, müsst ihr den add-Befehl benutzen, um die neuen Dateien zu indizieren.
+	$git add eure-datei.dateiendung
+	
+Als nächstes müsst ihr den commit-Befehl benutzen. Dieser erstellt einen Snapshot und lautet wie folgt:
+	& git commit -m "Eure Nachricht"
+	
+Nun könnt ihr die Dateien wieder auf GitHub "pushen". Dies geht mit dem git push-Befehl:
+	$ git push -u origin main
+Beim Durchführen dieses Commands müsst ihr euch anmelden. Gibt bei "username" euren GitHub-Benutzernamen und bei "password" euren vorher generierten Personal Access Token an.
+
+Wenn alles geklappt hat, solltet ihr die Änderungen online auf GitHub sehen können.
 
