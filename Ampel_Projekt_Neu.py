@@ -9,7 +9,7 @@ motion_detected = "False"
 stop_event = threading.Event()
 
 # Initialize Tetradirectional Traffic Light System
-    traffic_lights = {
+traffic_lights = {
         "N": {"red": LED(24), "yellow": LED(23), "green": LED(18)},
         "E": {"red": LED(26), "yellow": LED(19), "green": LED(13)},
         "S": {"red": LED(17), "yellow": LED(27), "green": LED(22)},
@@ -17,21 +17,21 @@ stop_event = threading.Event()
         }
 
 # Initialize PIR Sensor
-    pir = MotionSensor(6)  
+pir = MotionSensor(6)  
 
 # Initialize Distance Sensor (Ultrasonic)
-    distance_sensor = DistanceSensor(echo = 4, trigger = 12)
+distance_sensor = DistanceSensor(echo = 4, trigger = 12)
 
 # Initialize Servo Motor
-    SERVO_PIN = 25  
-    servo = Servo(SERVO_PIN, min_pulse_width=0.5/1000, max_pulse_width=2.5/1000)
+SERVO_PIN = 25  
+servo = Servo(SERVO_PIN, min_pulse_width=0.5/1000, max_pulse_width=2.5/1000)
 
 ###################################################### ^ GPIO Pins ^ ######################################################
 
 # Function for a Single Traffic Light Sequence
-    def traffic_light_sequence(direction):
-        lights = traffic_lights[direction]
-        print(f"Traffic light sequence for {direction} direction.")
+def traffic_light_sequence(direction):
+    lights = traffic_lights[direction]
+    print(f"Traffic light sequence for {direction} direction.")
 
 # Turns Traffic Light from Red to Yellow to Green
     lights["red"].off()
@@ -87,12 +87,12 @@ def crosswalk_traffic_control():
 #####################################################################
 
 # Function For The Traffic Light Sequence if There Is a Train
-    def train_crosswalk_traffic_control():
-        # Set All Directions to Red 
-            for lights in traffic_lights.values():
-                lights["red"].on()
-                lights["yellow"].off()
-                lights["green"].off()      
+def train_crosswalk_traffic_control():
+    # Set All Directions to Red 
+    for lights in traffic_lights.values():
+        lights["red"].on()
+        lights["yellow"].off()
+        lights["green"].off()      
 
 set_angle(180)
 print("Wait for the Train to pass.")
@@ -117,12 +117,12 @@ def Main_loop():
                     lights["yellow"].off()
                     lights["green"].off()
 
-            distance = distance_sensor.distance * 100  # Convert to cm
-            print(f"Distance: {distance:.2f} cm")
-            if distance < 50:  # Train Detected
+        distance = distance_sensor.distance * 100  # Convert to cm
+        print(f"Distance: {distance:.2f} cm")
+        if distance < 50:  # Train Detected
                 
-                print("Train detected! Starting train crosswalk sequence.")
-                train_crosswalk_traffic_control()
+            print("Train detected! Starting train crosswalk sequence.")
+            train_crosswalk_traffic_control()
             
 
             if pir.motion_detected:
