@@ -19,7 +19,7 @@ This is a project for a competition as part of the Goethe-Gymnasium science club
 
 - [@malikgdesigns](https://www.github.com/malikgdesigns) - Malik Gay
 - [@Coolmilol3](https://www.github.com/Coolmilol3) - Milosz Kazala
-- [@zalgorithm003](https://www.github.com/zalgorithm003)Zakaria Al-Harethee
+- [@zalgorithm003](https://www.github.com/zalgorithm003) - Zakaria Al-Harethee
 
 
 ## Feedback / Contact
