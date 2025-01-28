@@ -1,6 +1,6 @@
 # Ampelschaltung
 
-This is a project for a competition as part of the Goethe-Gymnasium science club. It contains a traffic light system written in Python designated to run on a Raspberry Pi 5 with a breadboard.
+This is a project for a pupil competition as part of the Goethe-Gymnasium. It contains a traffic light system written in Python designated to run on a Raspberry Pi 5 with a breadboard.
 
 
 
