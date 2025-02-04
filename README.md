@@ -7,29 +7,14 @@ Hier befindet sich der Code für unsere Ampelschaltung für das Raspberry Pi-Pro
 
 ## Features
 
-- Sensors to detect motion and create a working traffic environment
-- A small-scale physical replica of a hypothetical traffic light system
+- Bewegungssensoren, die ein realistisches Szenario erstellen
+- Eine Kreuzung
+- Ein mit Ultraschallsensoren und einem Servo-Motor automatisiertes Bahngleis mit Schranke
 
-
-## Documentation
-
-[Documentation](https://malikgdesigns.com/github-trafficlight-scienceclub-documentation)
-
-
-## Authors
+## Autoren
 
 - [@malikgdesigns](https://www.github.com/malikgdesigns) - Malik Gay
 - [@Coolmilol3](https://www.github.com/Coolmilol3) - Milosz Kazala
 - [@zalgorithm003](https://www.github.com/zalgorithm003) - Zakaria Al-Harethee
-
-
-## Feedback / Contact
-
-To contact the author(s), email info@malikgdesigns.com or send a DM to [Malik's Instagram](https://instagram.com/malikg.designs)
-
-
-## Acknowledgements
-
- - [Readme.so - Awesome README generator](https://readme.so/de/editor)
 
 
