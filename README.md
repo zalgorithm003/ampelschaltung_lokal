@@ -1,5 +1,5 @@
 ![image](https://github.com/user-attachments/assets/9052f528-c4c9-4ddc-91e7-3555637c5f36)
-
+#
 # Ampelschaltung
 Hier befindet sich der Code für unsere Ampelschaltung für das Raspberry Pi-Projekt (Goethe-Gymnasium).
 
