@@ -9,7 +9,7 @@ Hier befindet sich der Code für unsere Ampelschaltung für das Raspberry Pi-Pro
 ## Features
 
 - Bewegungssensoren, die ein realistisches Szenario erstellen
-- Eine Kreuzung
+- Eine Kreuzung mit mehreren möglichen Verkehrsteilnehmern
 - Ein mit Ultraschallsensoren und einem Servo-Motor automatisiertes Bahngleis mit Schranke
 
 ## Autoren
