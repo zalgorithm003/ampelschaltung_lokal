@@ -10,7 +10,7 @@ installieren.
 Sobald ihr git und gedit installiert habt, müsst ihr einen Ordner namens "main" erstellen, in dem ihr lokal die Dateien bearbeitet. Dies tut ihr mit
 	$ git init main
 	
-Um auf unser Projekt zugreifen zu können, müsst ihr zuerst einige Schritte durchführen. Zuerst müsst ihr einn Git-Benutzer erstellen. Dies könnt ihr mit den folgenden Befehlen:
+Um auf unser Projekt zugreifen zu können, müsst ihr zuerst einige Schritte durchführen. Zuerst müsst ihr einen Git-Benutzer erstellen. Dies könnt ihr mit den folgenden Befehlen:
 	$ git config user.name euer-name
 	$ git config user.email eure-email
 	
@@ -22,7 +22,7 @@ Benutzt als nächstes den Command
 um den Remote-Zugang zu verifizieren.
 
 Nun benutzt den Command
-	& git pull origin main
+	$ git pull origin main
 um die Repository in euren Ordner herunterzuladen. Beim Durchführen dieses Commands müsst ihr euch anmelden. Gibt bei "username" euren GitHub-Benutzernamen und bei "password" euren vorher generierten Personal Access Token an.
 
 Jetzt könnt ihr beliebige Änderungen vornehmen. Wenn ihr damit fertig seid und die Änderungen auf GitHub remote übertragen wollt, müsst ihr den add-Befehl benutzen, um die neuen oder veränderten Dateien zu indizieren.
