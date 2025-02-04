@@ -1,3 +1,4 @@
+![image](https://github.com/user-attachments/assets/02c20054-59b6-46db-ac1a-73a1c42f0b40)
 # Ampelschaltung
 
 This is a project for a pupil competition as part of the Goethe-Gymnasium. It contains a traffic light system written in Python designated to run on a Raspberry Pi 5 with a breadboard.
