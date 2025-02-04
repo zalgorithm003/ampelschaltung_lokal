@@ -1,106 +1,130 @@
-###################################################### ^ Traffic Control Functions ^ ######################################################
+# Import required libraries for GPIO control, timing, and data handling
+from gpiozero import LED, MotionSensor, DistanceSensor, Servo   # For hardware control <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[1](https://github.com/Gunjit27/Automated_Traffic_Light)</sup> <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[4](https://tutorials-raspberrypi.com/raspberry-pi-traffic-light-circuit-gpio-part-1/)</sup> 
+from time import sleep
+from datetime import datetime, timedelta
+import csv
+import threading
 
-# Function to manage the entire traffic light system during normal operation
+# Initialize global variables for timing and motion detection
+now = datetime.now()
+motion_detected = "False"
+stop_event = threading.Event()
+
+# Initialize four-way traffic light system with GPIO pin mappings
+# N = North, E = East, S = South, W = West <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[1](https://github.com/Gunjit27/Automated_Traffic_Light)</sup> <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[7](https://www.c-sharpcorner.com/article/traffic-light-system-using-raspberry-pi/)</sup> 
+traffic_lights = {
+    "N": {"red": LED(24), "yellow": LED(23), "green": LED(18)},
+    "E": {"red": LED(26), "yellow": LED(19), "green": LED(13)},
+    "S": {"red": LED(17), "yellow": LED(27), "green": LED(22)},
+    "W": {"red": LED(16), "yellow": LED(20), "green": LED(21)},
+}
+
+# Initialize sensors for traffic detection and management <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[5](https://www.ijnrd.org/papers/IJNRD2404301.pdf)</sup> 
+# PIR Sensor for motion detection
+pir = MotionSensor(6)  
+
+# Ultrasonic sensor for distance measurement
+distance_sensor = DistanceSensor(echo = 4, trigger = 12)
+
+# Servo motor configuration for barrier control
+SERVO_PIN = 25  
+servo = Servo(SERVO_PIN, min_pulse_width = 0.5/1000, max_pulse_width = 2.5/1000)
+
+###################################################### ^ GPIO Pins ^ ######################################################
+
+# Controls individual traffic light sequence for given direction <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[2](https://github.com/PranavBhanot/Smart-traffic-light-management-with-Python-and-OpenCV)</sup> 
+def traffic_light_sequence(direction):
+    lights = traffic_lights[direction]
+    print(f"Traffic light sequence for {direction} direction.")
+
+    # Standard traffic light sequence: Red → Yellow → Green → Yellow → Red
+    lights["red"].off()
+    lights["yellow"].on()
+    sleep(1)  # Yellow warning phase
+    lights["yellow"].off()
+    lights["green"].on()
+    sleep(5)  # Green phase for vehicle crossing
+
+    # Transition back to red
+    lights["green"].off()
+    lights["yellow"].on()
+    sleep(1)  # Yellow warning before red
+    lights["yellow"].off()
+    lights["red"].on()
+
+#####################################################################
+
+# Motion detection function using PIR sensor <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[5](https://www.ijnrd.org/papers/IJNRD2404301.pdf)</sup> 
+def motion():
+    if (pir.motion_detected()):
+        motion_detected = "True"
+    else:
+        motion_detected = "False"
+
+###################################################### ^ Light Sequence + Set Angle Functions ^ ######################################################
+
+# Main traffic control function for managing all directions <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[2](https://github.com/PranavBhanot/Smart-traffic-light-management-with-Python-and-OpenCV)</sup> 
 def crosswalk_traffic_control():
     for direction in traffic_lights:
-        # Safety measure: Set all non-active directions to red before changing any signal
+        # Ensure safety by setting red for all other directions
         for other_dir, lights in traffic_lights.items():
             if other_dir != direction:
                 lights["red"].on()
                 lights["yellow"].off()
                 lights["green"].off()
 
-        # Execute the traffic light sequence for the current direction
+        # Execute sequence for current direction
         traffic_light_sequence(direction)
 
-#####################################################################
+###################################################### ^ Traffic Control Functions ^ ######################################################
 
-# Specialized function for handling traffic light sequence during train crossing
-def train_crosswalk_traffic_control():
-    # Safety protocol: All directions must show red when a train is approaching
-    for lights in traffic_lights.values():
-        lights["red"].on()
-        lights["yellow"].off()
-        lights["green"].off()      
-
-    # Control barrier movement for train crossing
-    set_angle(180)  # Raise the barrier
-    print("Wait for the Train to pass.")
-    sleep(5)   # Safety delay during train passage
-    set_angle(0)  # Lower the barrier after train passes
-
-###################################################### ^ Main Control Logic ^ ######################################################
-
-# Main control loop for the traffic system
+# Main system control loop with time-based operation <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[5](https://www.ijnrd.org/papers/IJNRD2404301.pdf)</sup> 
 def Main_loop():
     try:
-        # Initialize system with all lights set to red
-        for lights in traffic_lights.values():
-            lights["red"].on()
+        start_time = datetime.now().replace(hour=6, minute=0, second=0, microsecond=0)  # Day starts at 6:00
+        end_time = datetime.now().replace(hour=22, minute=0, second=0, microsecond=0)   # Day ends at 22:00
+        lights = traffic_lights.values()
+        
+        while now() < start_time:  # Night mode: blinking yellow
             lights["yellow"].off()
-            lights["green"].off()
+            sleep(1)
+            lights["yellow"].on()
+            sleep(1)
 
-        for i in range(3):  # Execute control cycle three times
-            # Safety check: Ensure all signals start from red
-            for lights in traffic_lights.values():
-                lights["red"].on()
-                lights["yellow"].off()
-                lights["green"].off()
-
-            # Monitor train proximity using distance sensor
-            distance = distance_sensor.distance * 100  # Convert meters to centimeters
-            print(f"Distance: {distance:.2f} cm")
-            
-            if distance < 50:  # Train detection threshold (50 cm)
-                print("Train detected! Starting train crosswalk sequence.")
-                train_crosswalk_traffic_control()
+        while now() < end_time:  # Day mode: normal operation
+            crosswalk_traffic_control()
                 
-                # Check for pedestrian/vehicle traffic after train passes
-                if pir.motion_detected:
-                    print("Motion detected! Starting crosswalk sequence.")
-                    crosswalk_traffic_control()
-                else:
-                    print("No significant traffic detected.")
-                    
-                sleep(1)  # System update interval
+        while now() > end_time:  # Night mode: blinking yellow
+            lights["yellow"].off()
+            sleep(1)
+            lights["yellow"].on()
+            sleep(1)
 
-            i += 1
-        stop_event.set()   # Signal completion of main control loop
+        stop_event.set()    # Signal loop termination
     finally:
         pass
 
-# Continuous data logging function running in parallel
+# Data logging function for system monitoring <sup className="rounded-full text-xs cursor-pointer [&>*]:!text-white h-4 w-4 px-1 bg-zinc-400 hover:bg-zinc-500 dark:bg-zinc-700 hover:dark:bg-zinc-600">[2](https://github.com/PranavBhanot/Smart-traffic-light-management-with-Python-and-OpenCV)</sup> 
 def data_log_loop():
-    while not stop_event.is_set():    # Run until main loop signals completion
-        # Gather current sensor readings
+    while not stop_event.is_set():  # Run while main loop is active
         distance = distance_sensor.distance * 100 
         if pir.motion_detected:
-            motion_detected = "True"
+            motion_detected="True"
         else:
-            motion_detected = "False"
-            
-        # Log data to CSV file with timestamp and sensor readings
+            motion_detected="False"
         with open("traffic_data.csv", mode="a") as file:
             writer = csv.writer(file)
-            writer.writerow(["Date + Time:", now,
-                           "Traffic detected:", motion_detected,
-                           "Train distance:", distance, "cm"])    
-        sleep(1)    # Data logging interval
+            writer.writerow(["Date + Time:",now,"Traffic detected:", motion_detected,"Train distance:", distance,"cm"])    
+        sleep(1)    
 
-# Thread initialization and management
-def initialize_threads():
-    # Create separate threads for main control and data logging
-    thread1 = threading.Thread(target=Main_loop)
-    thread2 = threading.Thread(target=data_log_loop)
+# Initialize and start system threads
+thread1 = threading.Thread(target=Main_loop)
+thread2 = threading.Thread(target=data_log_loop)
 
-    # Start both threads
-    thread1.start()
-    thread2.start()
+# Launch threads
+thread1.start()
+thread2.start()
 
-    # Wait for both threads to complete execution
-    thread1.join()
-    thread2.join()
-
-# System execution entry point
-if __name__ == "__main__":
-    initialize_threads()
+# Wait for completion
+thread1.join()
+thread2.join()
