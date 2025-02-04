@@ -94,10 +94,10 @@ def train_crosswalk_traffic_control():
         lights["yellow"].off()
         lights["green"].off()      
 
-set_angle(180)
-print("Wait for the Train to pass.")
-sleep(5)   
-set_angle(0)
+    set_angle(180)
+    print("Wait for the Train to pass.")
+    sleep(5)   
+    set_angle(0)
 
 ###################################################### ^ Traffic Control Functions ^ ######################################################
 
@@ -110,19 +110,19 @@ def Main_loop():
             lights["yellow"].off()
             lights["green"].off()
 
-        for i in range(3) :
+        for i in range(5) :
             # Ensure All Lights Are Initially Red
-                for lights in traffic_lights.values():
-                    lights["red"].on()
-                    lights["yellow"].off()
-                    lights["green"].off()
+            for lights in traffic_lights.values():
+                lights["red"].on()
+                lights["yellow"].off()
+                lights["green"].off()
 
-        distance = distance_sensor.distance * 100  # Convert to cm
-        print(f"Distance: {distance:.2f} cm")
-        if distance < 50:  # Train Detected
+            distance = distance_sensor.distance * 100  # Convert to cm
+            print(f"Distance: {distance:.2f} cm")
+            if distance < 50:  # Train Detected
                 
-            print("Train detected! Starting train crosswalk sequence.")
-            train_crosswalk_traffic_control()
+                print("Train detected! Starting train crosswalk sequence.")
+                train_crosswalk_traffic_control()
             
 
             if pir.motion_detected:
@@ -133,7 +133,6 @@ def Main_loop():
             else:
                 print("No significant traffic detected.")
             sleep(1)  # Delay for the Next Iteration
-
             i=i+1
         stop_event.set()   # Signal that Main_loop Ended
     finally:
@@ -152,13 +151,13 @@ def data_log_loop():
         sleep(1)    
 
 #Create Threads for Both Loops
-    thread1 = threading.Thread(target=Main_loop)
-    thread2 = threading.Thread(target=data_log_loop)
+thread1 = threading.Thread(target=Main_loop)
+thread2 = threading.Thread(target=data_log_loop)
 
 # Start Both Threads
-    thread1.start()
-    thread2.start()
+thread1.start()
+thread2.start()
 
 # Wait for The Main_loop to Finish
-    thread1.join()
-    thread2.join()
+thread1.join()
+thread2.join()

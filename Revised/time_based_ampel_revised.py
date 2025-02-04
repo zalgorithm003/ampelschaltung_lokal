@@ -79,18 +79,18 @@ def Main_loop():
         lights = traffic_lights.values()
 
         # Night Mode (Before 6:00) - Flashing Yellow
-        while now() < start_time:
+        while now < start_time:
             lights["yellow"].off()
             sleep(1)
             lights["yellow"].on()
             sleep(1)
 
         # Day Mode Operation (6:00 - 22:00)
-        while now() < end_time:
+        while now < end_time:
             crosswalk_traffic_control()
                 
         # Night Mode (After 22:00) - Flashing Yellow
-        while now() > end_time:
+        while now > end_time:
             lights["yellow"].off()
             sleep(1)
             lights["yellow"].on()
