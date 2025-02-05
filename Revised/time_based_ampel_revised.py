@@ -47,6 +47,7 @@ def traffic_light_sequence(direction):
     sleep(1)                        # 1-second yellow duration
     lights["yellow"].off()          # Back to red
     lights["red"].on()
+    sleep(3)                        # 3-second red duration
 
 ############################################### MOTION DETECTION ##########################################
 def motion():
@@ -76,14 +77,14 @@ def Main_loop():
         # Define Operating Hours
         start_time = datetime.now().replace(hour=6, minute=0, second=0, microsecond=0)   # Day start: 6:00
         end_time = datetime.now().replace(hour=22, minute=0, second=0, microsecond=0)    # Day end: 22:00
-        lights = traffic_lights.values()
 
         # Night Mode (Before 6:00) - Flashing Yellow
         while now < start_time:
-            lights["yellow"].off()
-            sleep(1)
-            lights["yellow"].on()
-            sleep(1)
+            for lights in traffic_lights.values():
+                lights["yellow"].off()
+                sleep(1)
+                lights["yellow"].on()
+                sleep(1)
 
         # Day Mode Operation (6:00 - 22:00)
         while now < end_time:
@@ -91,10 +92,11 @@ def Main_loop():
                 
         # Night Mode (After 22:00) - Flashing Yellow
         while now > end_time:
-            lights["yellow"].off()
-            sleep(1)
-            lights["yellow"].on()
-            sleep(1)
+            for lights in traffic_lights.values():
+                lights["yellow"].off()
+                sleep(1)
+                lights["yellow"].on()
+                sleep(1)
 
         stop_event.set()            # Signal loop termination
     finally:
