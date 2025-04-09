@@ -147,7 +147,7 @@ def data_log_loop():
         with open("traffic_data.csv", mode="a") as file:
             writer = csv.writer(file)
             # Log date, time, motion status, and train distance
-            writer.writerow(["Date + Time:", datetime.now, "Traffic detected:", motion_detected, "Train distance:", distance, "cm"])    
+            writer.writerow(["Date + Time:", datetime.now(), "Traffic detected:", motion_detected, "Train distance:", distance, "cm"])    
         sleep(1)  # Log data every second
 
 # Create threads for both loops (Main loop and Data logging loop)

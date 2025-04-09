@@ -8,7 +8,6 @@ import threading                                               # For parallel pr
 ############################################### GLOBAL VARIABLES ############################################
 motion_detected = "False"           # Motion state flag
 stop_event = threading.Event()      # Thread control event
-
 ############################################### GPIO SETUP #################################################
 # Initialize Four-Way Traffic Light System with GPIO pin assignments 
 traffic_lights = {
@@ -78,7 +77,7 @@ def Main_loop():
         end_time = datetime.now().replace(hour=22, minute=0, second=0, microsecond=0)    # Day end: 22:00
 
         # Night Mode (Before 6:00) - Flashing Yellow
-        while datetime.now < start_time:
+        while datetime.now() < start_time:
             for lights in traffic_lights.values():
                 lights["yellow"].off()
                 sleep(1)
@@ -86,11 +85,11 @@ def Main_loop():
                 sleep(1)
 
         # Day Mode Operation (6:00 - 22:00)
-        while datetime.now < end_time:
+        while datetime.now() < end_time:
             crosswalk_traffic_control()
                 
         # Night Mode (After 22:00) - Flashing Yellow
-        while datetime.now > end_time:
+        while datetime.now() > end_time:
             for lights in traffic_lights.values():
                 lights["yellow"].off()
                 sleep(1)
