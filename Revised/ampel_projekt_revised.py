@@ -10,11 +10,11 @@ stop_event = threading.Event()
 
 # Initialize Tetradirectional Traffic Light System (N, E, S, W directions)
 traffic_lights = {
-        "N": {"red": LED(24), "yellow": LED(23), "green": LED(18)},
-        "E": {"red": LED(26), "yellow": LED(19), "green": LED(13)},
-        "S": {"red": LED(17), "yellow": LED(27), "green": LED(22)},
-        "W": {"red": LED(16), "yellow": LED(20), "green": LED(21)},
-        }
+    "N": {"red": LED(24), "yellow": LED(23), "green": LED(18)},
+    "E": {"red": LED(26), "yellow": LED(19), "green": LED(13)},
+    "S": {"red": LED(17), "yellow": LED(27), "green": LED(22)},
+    "W": {"red": LED(16), "yellow": LED(20), "green": LED(21)},
+}
 
 # Initialize PIR Sensor for motion detection
 pir = MotionSensor(6)  
