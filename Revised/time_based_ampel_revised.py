@@ -6,7 +6,6 @@ import csv                                                     # For data loggin
 import threading                                               # For parallel process management
 
 ############################################### GLOBAL VARIABLES ############################################
-now = datetime.now()                # Current time reference
 motion_detected = "False"           # Motion state flag
 stop_event = threading.Event()      # Thread control event
 
@@ -79,7 +78,7 @@ def Main_loop():
         end_time = datetime.now().replace(hour=22, minute=0, second=0, microsecond=0)    # Day end: 22:00
 
         # Night Mode (Before 6:00) - Flashing Yellow
-        while now < start_time:
+        while datetime.now < start_time:
             for lights in traffic_lights.values():
                 lights["yellow"].off()
                 sleep(1)
@@ -87,11 +86,11 @@ def Main_loop():
                 sleep(1)
 
         # Day Mode Operation (6:00 - 22:00)
-        while now < end_time:
+        while datetime.now < end_time:
             crosswalk_traffic_control()
                 
         # Night Mode (After 22:00) - Flashing Yellow
-        while now > end_time:
+        while datetime.now > end_time:
             for lights in traffic_lights.values():
                 lights["yellow"].off()
                 sleep(1)
@@ -112,7 +111,7 @@ def data_log_loop():
             motion_detected="False"
         with open("traffic_data.csv", mode="a") as file:
             writer = csv.writer(file)
-            writer.writerow(["Date + Time:",now,"Traffic detected:", motion_detected,"Train distance:", distance,"cm"])    
+            writer.writerow(["Date + Time:",datetime.now,"Traffic detected:", motion_detected,"Train distance:", distance,"cm"])    
         sleep(1)    
 
 ############################################### THREAD MANAGEMENT ######################################
