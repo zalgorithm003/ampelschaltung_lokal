@@ -47,6 +47,37 @@ def traffic_light_sequence(direction):
     lights["red"].on()
     sleep(3)                        # 3-second red duration
 
+# Dual Direction Traffic Light Control Sequence
+def traffic_light_sequence_dual(direction1, direction2):
+    lights1 = traffic_lights[direction1]
+    lights2 = traffic_lights[direction2]
+    print(f"Traffic light sequence for {direction1} and {direction2} directions.")
+
+    # Standard Traffic Light Sequence Implementation
+    sleep(3)  # 3-second red duration
+    lights1["red"].off()
+    lights2["red"].off()
+    lights1["yellow"].on()
+    lights2["yellow"].on()
+    sleep(1)  # 1-second yellow duration
+    lights1["yellow"].off()
+    lights2["yellow"].off()
+    lights1["green"].on()
+    lights2["green"].on()
+    sleep(5)  # 5-second green duration
+
+    # Return to Red Sequence
+    lights1["green"].off()
+    lights2["green"].off()
+    lights1["yellow"].on()
+    lights2["yellow"].on()
+    sleep(1)  # 1-second yellow duration
+    lights1["yellow"].off()
+    lights2["yellow"].off()
+    lights1["red"].on()
+    lights2["red"].on()
+
+
 ############################################### MOTION DETECTION ##########################################
 def motion():
     if (pir.motion_detected()):     # Check PIR sensor status 
@@ -68,33 +99,50 @@ def crosswalk_traffic_control():
         # Execute Sequence for Active Direction
         traffic_light_sequence(direction)
 
+# Comprehensive Traffic Light Management
+def crosswalk_traffic_control_dual_direction():
+    for direction in traffic_lights:
+        # Safety: Set Red for All Other Directions
+        for other_dir, lights in traffic_lights.items():
+            if other_dir != direction:
+                lights["red"].on()
+                lights["yellow"].off()
+                lights["green"].off()
+    while True:
+        # North-South Green
+        traffic_light_sequence_dual("N", "S")
+        # East-West Green
+        traffic_light_sequence_dual("E", "W")
+
 ############################################### MAIN SYSTEM LOOPS #######################################
 # Primary System Control Loop
 def Main_loop():
     try:
         # Define Operating Hours
-        start_time = datetime.now().replace(hour=6, minute=0, second=0, microsecond=0)   # Day start: 6:00
+        start_time = datetime.now().replace(hour=5, minute=0, second=0, microsecond=0)   # Day start: 6:00
         end_time = datetime.now().replace(hour=22, minute=0, second=0, microsecond=0)    # Day end: 22:00
 
-        # Night Mode (Before 6:00) - Flashing Yellow
+        # Night Mode (Before 6:00) - Flashing Yellow Simultaneously
         while datetime.now() < start_time:
             for lights in traffic_lights.values():
-                lights["yellow"].off()
-                sleep(1)
-                lights["yellow"].on()
-                sleep(1)
+                lights["yellow"].on()  # Turn all yellow LEDs on
+            sleep(1)
+            for lights in traffic_lights.values():
+                lights["yellow"].off()  # Turn all yellow LEDs off
+            sleep(1)
 
         # Day Mode Operation (6:00 - 22:00)
         while datetime.now() < end_time:
-            crosswalk_traffic_control()
-                
-        # Night Mode (After 22:00) - Flashing Yellow
-        while datetime.now() > end_time:
+            crosswalk_traffic_control_dual_direction()
+
+        # Night Mode (After 22:00) - Flashing Yellow Simultaneously
+        while datetime.now() >= end_time:
             for lights in traffic_lights.values():
-                lights["yellow"].off()
-                sleep(1)
-                lights["yellow"].on()
-                sleep(1)
+                lights["yellow"].on()  # Turn all yellow LEDs on
+            sleep(1)
+            for lights in traffic_lights.values():
+                lights["yellow"].off()  # Turn all yellow LEDs off
+            sleep(1)
 
         stop_event.set()            # Signal loop termination
     finally:
