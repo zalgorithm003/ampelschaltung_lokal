@@ -46,6 +46,37 @@ def traffic_light_sequence(direction):
     sleep(1)  # Yellow light duration before turning Red
     lights["yellow"].off()  # Turn off Yellow light
     lights["red"].on()   # Turn on Red light
+    
+# Dual Direction Traffic Light Control Sequence
+def traffic_light_sequence_dual(direction1, direction2):
+    lights1 = traffic_lights[direction1]
+    lights2 = traffic_lights[direction2]
+    print(f"Traffic light sequence for {direction1} and {direction2} directions.")
+
+    # Standard Traffic Light Sequence Implementation
+    sleep(3)  # 3-second red duration
+    lights1["red"].off()
+    lights2["red"].off()
+    lights1["yellow"].on()
+    lights2["yellow"].on()
+    sleep(1)  # 1-second yellow duration
+    lights1["yellow"].off()
+    lights2["yellow"].off()
+    lights1["green"].on()
+    lights2["green"].on()
+    sleep(5)  # 5-second green duration
+
+    # Return to Red Sequence
+    lights1["green"].off()
+    lights2["green"].off()
+    lights1["yellow"].on()
+    lights2["yellow"].on()
+    sleep(1)  # 1-second yellow duration
+    lights1["yellow"].off()
+    lights2["yellow"].off()
+    lights1["red"].on()
+    lights2["red"].on()
+
 
 #####################################################################
 
@@ -78,9 +109,24 @@ def crosswalk_traffic_control():
                 lights["red"].on()  # Turn on red lights for other directions
                 lights["yellow"].off()  # Turn off yellow and green lights
                 lights["green"].off()
-
+                
         # Run the light sequence for the current direction
         traffic_light_sequence(direction)
+
+# Function to manage traffic lights for dual direction (North-South and East-West)
+def crosswalk_traffic_control_dual_direction():
+    for direction in traffic_lights:
+        # Safety: Set Red for All Other Directions
+        for other_dir, lights in traffic_lights.items():
+            if other_dir != direction:
+                lights["red"].on()
+                lights["yellow"].off()
+                lights["green"].off()
+    while True:
+        # North-South Green
+        traffic_light_sequence_dual("N", "S")
+        # East-West Green
+        traffic_light_sequence_dual("E", "W")
 
 #####################################################################
 
@@ -111,12 +157,7 @@ def Main_loop():
             lights["green"].off()
 
         for i in range(5):
-            # Ensure all lights are initially red
-            for lights in traffic_lights.values():
-                lights["red"].on()
-                lights["yellow"].off()
-                lights["green"].off()
-
+            
             # Measure the distance using ultrasonic sensor to detect trains
             distance = distance_sensor.distance * 100  # Convert distance to cm
             print(f"Distance: {distance:.2f} cm")
@@ -127,10 +168,10 @@ def Main_loop():
             # If motion is detected, manage pedestrian crosswalk traffic
             if pir.motion_detected:
                 print("Motion detected! Starting crosswalk sequence.")
-                crosswalk_traffic_control()
+                crosswalk_traffic_control_dual_direction()
             else:
                 print("No significant traffic detected.")
-            sleep(1)  # Delay for the next iteration
+            sleep(3)  # Delay for the next iteration
             i = i + 1
         stop_event.set()   # Signal that the Main_loop has ended
     finally:
