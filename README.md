@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/4011294d-90b7-4c0d-821a-ff564d8e17b8)
+![image](https://github.com/user-attachments/assets/0b427717-3b84-4f43-8d11-35431e47b909)
 
 
 # Ampelschaltung
