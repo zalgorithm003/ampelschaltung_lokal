@@ -10,7 +10,7 @@ Hier befindet sich der Code für unsere Ampelschaltung für das aktuelle Projekt
 
 - Bewegungssensoren, die ein realistisches Szenario ermöglichen - Ein PIR-Sensor, der an der ganzen Kreuzung Verkehr erkennt und ein Ultraschallsensor, der vorbeifahrende Züge erkennt.
 - Eine Kreuzung mit mehreren möglichen Verkehrsteilnehmern
-- Ein mit Ultraschallsensoren und einem Servo-Motor automatisiertes Bahngleis mit Schranke
+- Ein mit Ultraschallsensoren und einem Servo-Motor automatisiertes Bahngleis mit Schranke (defekt)
 
 ## Anweisungen
 
