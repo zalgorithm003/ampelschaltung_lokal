@@ -25,6 +25,7 @@ Zum Austesten / Benutzen unserer Ampelschaltung samt Sensoren muss die Datei 'se
 
 - [@malikgdesigns](https://www.github.com/malikgdesigns) - Malik Gay
 - [@Coolmilol3](https://www.github.com/Coolmilol3) - Milosz Kazala
-- [@zalgorithm003](https://www.github.com/zalgorithm003) - Zakaria Al-Harethee
+- [@zalgorithm003](https://www.github.com/zalgorithm003) - Zakaria
+- 
 
 
