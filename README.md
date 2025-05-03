@@ -19,8 +19,7 @@ Klonen Sie zunächst die Repository:
    $ git clone https://github.com/zalgorithm003/ampelschaltung_mmz.git
    
 und öffnen Sie sie in Visual Studio Code.
-Zum Austesten / Benutzen unserer Ampelschaltung samt Sensoren muss die Datei 'sensor_based_ampelschaltung.py' ausgeführt werden. Sie befindet sich im Ordner 'sensor_based'. Um auf die zeitbasierten Versionen ohne Sensoren zuzugreifen, öffnen Sie 'time_based_ampelschaltung' im Ordner 'time_based'.
-
+Zum Austesten / Benutzen unserer Ampelschaltung samt Sensoren muss die Datei 'sensor_based_ampelschaltung.py' ausgeführt werden. Um auf die zeitbasierten Versionen ohne Sensoren zuzugreifen, öffnen Sie 'time_based_ampelschaltung'.
 
 ## Autoren
 
